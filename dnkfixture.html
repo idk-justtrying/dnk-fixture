@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copa Mundial 2026 · Fixture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.3/css/flag-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0d0f14;
+    --surface:   #161b24;
+    --surface2:  #1e2533;
+    --border:    #2a3244;
+    --text:      #e8eaf0;
+    --muted:     #6b7a96;
+    --accent:    #f5a623;
+    --accent2:   #e8341c;
+    --gold:      #d4af37;
+    --green:     #27ae60;
+    --blue:      #2980b9;
+    --purple:    #8e44ad;
+    --teal:      #16a085;
+    --radius:    12px;
+    --radius-sm: 8px;
+    --trans:     0.22s cubic-bezier(.4,0,.2,1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: linear-gradient(135deg, #0d0f14 0%, #1a1f2e 50%, #0f1520 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 20px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .trophy-icon {
+    font-size: 36px;
+    line-height: 1;
+    filter: drop-shadow(0 0 12px rgba(245, 166, 35, 0.5));
+  }
+
+  .header-titles h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1;
+    background: linear-gradient(90deg, #f5a623, #e8341c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .header-titles p {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* ─── SEARCH ─── */
+  .search-bar {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .search-bar input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 16px 10px 42px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color var(--trans), box-shadow var(--trans);
+  }
+
+  .search-bar input::placeholder { color: var(--muted); }
+
+  .search-bar input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.12);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+    font-size: 16px;
+  }
+
+  .search-bar .clear-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    display: none;
+    font-size: 16px;
+    transition: color var(--trans);
+  }
+
+  .search-bar .clear-btn:hover { color: var(--text); }
+  .search-bar.has-query .clear-btn { display: block; }
+
+  /* ─── WEEK TABS ─── */
+  .week-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .week-tab {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 7px 14px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--trans);
+    white-space: nowrap;
+  }
+
+  .week-tab:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(245, 166, 35, 0.06);
+  }
+
+  .week-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+    font-weight: 700;
+  }
+
+  .week-tab.all-tab.active {
+    background: var(--surface2);
+    border-color: var(--text);
+    color: var(--text);
+  }
+
+  /* ─── TIMEZONE SELECTOR ─── */
+  .tz-bar {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 12px 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .tz-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .tz-toggle {
+    display: flex;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .tz-btn {
+    background: none;
+    border: none;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all var(--trans);
+    letter-spacing: 0.05em;
+  }
+
+  .tz-btn.active {
+    background: var(--accent);
+    color: #000;
+    border-radius: 20px;
+  }
+
+  /* ─── MAIN ─── */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  /* ─── SECTION HEADER ─── */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .section-count {
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-weight: 500;
+  }
+
+  /* ─── DATE GROUP ─── */
+  .date-group {
+    margin-bottom: 32px;
+  }
+
+  .date-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .date-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── CARDS GRID ─── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+  }
+
+  /* ─── MATCH CARD ─── */
+  .match-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    transition: border-color var(--trans), transform var(--trans), box-shadow var(--trans);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .match-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    right: 0; height: 3px;
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+
+  .match-card:hover {
+    border-color: rgba(245,166,35,0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  /* Phase accent colors */
+  .phase-grupos::before    { background: linear-gradient(90deg, var(--blue), var(--teal)); }
+  .phase-dieciseis::before { background: linear-gradient(90deg, var(--purple), var(--blue)); }
+  .phase-octavos::before   { background: linear-gradient(90deg, var(--teal), var(--green)); }
+  .phase-cuartos::before   { background: linear-gradient(90deg, var(--green), var(--accent)); }
+  .phase-semis::before     { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+  .phase-tercero::before   { background: linear-gradient(90deg, var(--gold), var(--accent)); }
+  .phase-final::before     {
+    background: linear-gradient(90deg, var(--gold), var(--accent2), var(--gold));
+    height: 4px;
+  }
+
+  /* Final card special style */
+  .phase-final {
+    border-color: rgba(212,175,55,0.4);
+    background: linear-gradient(135deg, #161b24 0%, #1f1a0e 100%);
+  }
+
+  /* ─── CARD HEADER ─── */
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    gap: 8px;
+  }
+
+  .phase-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .badge-grupos    { background: rgba(41,128,185,0.2);  color: #5dade2; border: 1px solid rgba(41,128,185,0.3); }
+  .badge-dieciseis { background: rgba(142,68,173,0.2); color: #bb8fce; border: 1px solid rgba(142,68,173,0.3); }
+  .badge-octavos   { background: rgba(22,160,133,0.2); color: #48c9b0; border: 1px solid rgba(22,160,133,0.3); }
+  .badge-cuartos   { background: rgba(39,174,96,0.2);  color: #58d68d; border: 1px solid rgba(39,174,96,0.3); }
+  .badge-semis     { background: rgba(245,166,35,0.18); color: var(--accent); border: 1px solid rgba(245,166,35,0.3); }
+  .badge-tercero   { background: rgba(212,175,55,0.15); color: var(--gold); border: 1px solid rgba(212,175,55,0.3); }
+  .badge-final     { background: rgba(212,175,55,0.2); color: var(--gold); border: 1px solid rgba(212,175,55,0.5); font-size: 11px; }
+
+  .group-tag {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* ─── MATCHUP ─── */
+  .matchup {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .team {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .team-name {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .team-flag {
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .flag-icon {
+    width: 24px !important;
+    height: 18px !important;
+    border-radius: 3px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    display: inline-block;
+  }
+
+  .right-flag {
+    text-align: right;
+  }
+
+  .team-name.knockout {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    white-space: normal;
+  }
+
+  .vs-divider {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--muted);
+    flex-shrink: 0;
+    letter-spacing: 0.05em;
+  }
+
+  .team-right { text-align: right; }
+
+  /* ─── CARD FOOTER ─── */
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .venue-info {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .venue-icon { font-size: 12px; flex-shrink: 0; }
+
+  .venue-name {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .time-info {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  .time-label {
+    font-size: 9px;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: block;
+    text-align: right;
+  }
+
+  /* ─── EMPTY STATE ─── */
+  .empty-state {
+    text-align: center;
+    padding: 64px 20px;
+    color: var(--muted);
+  }
+
+  .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-state h3 { font-size: 18px; color: var(--text); margin-bottom: 8px; }
+  .empty-state p { font-size: 14px; }
+
+  /* ─── SEARCH MODE LABEL ─── */
+  .search-mode-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 10px 14px;
+    background: rgba(245,166,35,0.07);
+    border: 1px solid rgba(245,166,35,0.2);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  .search-mode-info span { flex: 1; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .date-group {
+    animation: fadeInUp 0.3s ease both;
+  }
+
+  .date-group:nth-child(1) { animation-delay: 0.00s; }
+  .date-group:nth-child(2) { animation-delay: 0.04s; }
+  .date-group:nth-child(3) { animation-delay: 0.08s; }
+  .date-group:nth-child(4) { animation-delay: 0.12s; }
+  .date-group:nth-child(5) { animation-delay: 0.16s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .cards-grid { grid-template-columns: 1fr; }
+    .header-titles h1 { font-size: 22px; }
+    .week-tab { padding: 6px 10px; font-size: 11px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="trophy-icon">🏆</div>
+      <div class="header-titles">
+        <h1>Copa Mundial 2026</h1>
+        <p>Estados Unidos · Canadá · México &nbsp;·&nbsp; 82 partidos &nbsp;·&nbsp; 6 semanas</p>
+      </div>
+    </div>
+
+    <div class="search-bar" id="searchBar">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Buscar por equipo, sede o grupo..."
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <button class="clear-btn" id="clearBtn" title="Limpiar búsqueda">✕</button>
+    </div>
+
+    <div class="week-tabs" id="weekTabs">
+      <button class="week-tab all-tab active" data-week="all">Todos</button>
+      <button class="week-tab" data-week="Semana 1">Sem 1 · 11–17 Jun</button>
+      <button class="week-tab" data-week="Semana 2">Sem 2 · 18–24 Jun</button>
+      <button class="week-tab" data-week="Semana 3">Sem 3 · 25 Jun–1 Jul</button>
+      <button class="week-tab" data-week="Semana 4">Sem 4 · 2–8 Jul</button>
+      <button class="week-tab" data-week="Semana 5">Sem 5 · 10–15 Jul</button>
+      <button class="week-tab" data-week="Semana 6">Sem 6 · 18–19 Jul</button>
+    </div>
+  </div>
+</header>
+
+<div class="tz-bar">
+  <span class="tz-label">⏰ Horario:</span>
+  <div class="tz-toggle">
+    <button class="tz-btn" data-tz="local">Local sede</button>
+    <button class="tz-btn active" data-tz="art">ART (UTC−3)</button>
+  </div>
+</div>
+
+<main id="main"></main>
+
+<script>
+const FIXTURES = [
+  {"Semana":"Semana 1","Fecha":"11-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo A","Partido":"México vs. Sudáfrica","Sede":"Ciudad de México"},
+  {"Semana":"Semana 1","Fecha":"11-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo A","Partido":"Corea del Sur vs. Rep. Checa","Sede":"Guadalajara"},
+  {"Semana":"Semana 1","Fecha":"12-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo B","Partido":"Canadá vs. Bosnia y Herzegovina","Sede":"Toronto"},
+  {"Semana":"Semana 1","Fecha":"12-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo D","Partido":"Estados Unidos vs. Paraguay","Sede":"Los Ángeles"},
+  {"Semana":"Semana 1","Fecha":"13-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo B","Partido":"Catar vs. Suiza","Sede":"San Francisco"},
+  {"Semana":"Semana 1","Fecha":"13-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo C","Partido":"Brasil vs. Marruecos","Sede":"Nueva York/Nueva Jersey"},
+  {"Semana":"Semana 1","Fecha":"13-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo C","Partido":"Haití vs. Escocia","Sede":"Boston"},
+  {"Semana":"Semana 1","Fecha":"14-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo D","Partido":"Australia vs. Turquía","Sede":"Vancouver"},
+  {"Semana":"Semana 1","Fecha":"14-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo E","Partido":"Alemania vs. Curazao","Sede":"Houston"},
+  {"Semana":"Semana 1","Fecha":"14-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo F","Partido":"Países Bajos vs. Japón","Sede":"Dallas"},
+  {"Semana":"Semana 1","Fecha":"14-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo E","Partido":"Costa de Marfil vs. Ecuador","Sede":"Filadelfia"},
+  {"Semana":"Semana 1","Fecha":"14-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo F","Partido":"Suecia vs. Túnez","Sede":"Monterrey"},
+  {"Semana":"Semana 1","Fecha":"15-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo H","Partido":"España vs. Cabo Verde","Sede":"Atlanta"},
+  {"Semana":"Semana 1","Fecha":"15-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo G","Partido":"Bélgica vs. Egipto","Sede":"Seattle"},
+  {"Semana":"Semana 1","Fecha":"15-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo H","Partido":"Arabia Saudita vs. Uruguay","Sede":"Miami"},
+  {"Semana":"Semana 1","Fecha":"15-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo G","Partido":"Irán vs. Nueva Zelanda","Sede":"Los Ángeles"},
+  {"Semana":"Semana 1","Fecha":"16-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo I","Partido":"Francia vs. Senegal","Sede":"Nueva York/Nueva Jersey"},
+  {"Semana":"Semana 1","Fecha":"16-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo I","Partido":"Irak vs. Noruega","Sede":"Boston"},
+  {"Semana":"Semana 1","Fecha":"16-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo J","Partido":"Argentina vs. Argelia","Sede":"Kansas City"},
+  {"Semana":"Semana 1","Fecha":"16-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo J","Partido":"Austria vs. Jordania","Sede":"San Francisco"},
+  {"Semana":"Semana 1","Fecha":"17-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo K","Partido":"Portugal vs. RD Congo","Sede":"Houston"},
+  {"Semana":"Semana 1","Fecha":"17-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo L","Partido":"Inglaterra vs. Croacia","Sede":"Dallas"},
+  {"Semana":"Semana 1","Fecha":"17-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo L","Partido":"Ghana vs. Panamá","Sede":"Toronto"},
+  {"Semana":"Semana 1","Fecha":"17-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo K","Partido":"Uzbekistán vs. Colombia","Sede":"Ciudad de México"},
+  {"Semana":"Semana 2","Fecha":"18-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo A","Partido":"Rep. Checa vs. Sudáfrica","Sede":"Atlanta"},
+  {"Semana":"Semana 2","Fecha":"18-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo B","Partido":"Suiza vs. Bosnia y Herzegovina","Sede":"Los Ángeles"},
+  {"Semana":"Semana 2","Fecha":"18-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo B","Partido":"Canadá vs. Catar","Sede":"Vancouver"},
+  {"Semana":"Semana 2","Fecha":"18-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo A","Partido":"México vs. Corea del Sur","Sede":"Guadalajara"},
+  {"Semana":"Semana 2","Fecha":"19-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo C","Partido":"Brasil vs. Haití","Sede":"Filadelfia"},
+  {"Semana":"Semana 2","Fecha":"19-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo C","Partido":"Escocia vs. Marruecos","Sede":"Boston"},
+  {"Semana":"Semana 2","Fecha":"21-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo G","Partido":"Bélgica vs. Irán","Sede":"Los Ángeles"},
+  {"Semana":"Semana 2","Fecha":"21-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo H","Partido":"España vs. Arabia Saudita","Sede":"Atlanta"},
+  {"Semana":"Semana 2","Fecha":"22-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo J","Partido":"Argentina vs. Austria","Sede":"Dallas"},
+  {"Semana":"Semana 2","Fecha":"22-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo I","Partido":"Francia vs. Irak","Sede":"Filadelfia"},
+  {"Semana":"Semana 2","Fecha":"22-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo I","Partido":"Noruega vs. Senegal","Sede":"Toronto"},
+  {"Semana":"Semana 2","Fecha":"23-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo J","Partido":"Jordania vs. Argelia","Sede":"San Francisco"},
+  {"Semana":"Semana 2","Fecha":"23-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo K","Partido":"Portugal vs. Uzbekistán","Sede":"Houston"},
+  {"Semana":"Semana 2","Fecha":"23-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo L","Partido":"Inglaterra vs. Ghana","Sede":"Boston"},
+  {"Semana":"Semana 2","Fecha":"23-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo L","Partido":"Panamá vs. Croacia","Sede":"Toronto"},
+  {"Semana":"Semana 2","Fecha":"23-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo K","Partido":"Colombia vs. RD Congo","Sede":"Guadalajara"},
+  {"Semana":"Semana 2","Fecha":"24-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo B","Partido":"Suiza vs. Canadá","Sede":"Vancouver"},
+  {"Semana":"Semana 2","Fecha":"24-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo B","Partido":"Bosnia y Herzegovina vs. Catar","Sede":"Seattle"},
+  {"Semana":"Semana 2","Fecha":"24-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo C","Partido":"Marruecos vs. Haití","Sede":"Atlanta"},
+  {"Semana":"Semana 2","Fecha":"24-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo A","Partido":"Rep. Checa vs. México","Sede":"Ciudad de México"},
+  {"Semana":"Semana 2","Fecha":"24-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo A","Partido":"Sudáfrica vs. Corea del Sur","Sede":"Monterrey"},
+  {"Semana":"Semana 3","Fecha":"25-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo E","Partido":"Ecuador vs. Alemania","Sede":"Nueva York/Nueva Jersey"},
+  {"Semana":"Semana 3","Fecha":"25-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo E","Partido":"Curazao vs. Costa de Marfil","Sede":"Filadelfia"},
+  {"Semana":"Semana 3","Fecha":"25-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo F","Partido":"Túnez vs. Países Bajos","Sede":"Dallas"},
+  {"Semana":"Semana 3","Fecha":"25-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo F","Partido":"Japón vs. Suecia","Sede":"Kansas City"},
+  {"Semana":"Semana 3","Fecha":"25-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo D","Partido":"Turquía vs. Estados Unidos","Sede":"Los Ángeles"},
+  {"Semana":"Semana 3","Fecha":"25-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo D","Partido":"Paraguay vs. Australia","Sede":"San Francisco"},
+  {"Semana":"Semana 3","Fecha":"26-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo I","Partido":"Noruega vs. Francia","Sede":"Boston"},
+  {"Semana":"Semana 3","Fecha":"26-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo I","Partido":"Senegal vs. Irak","Sede":"Toronto"},
+  {"Semana":"Semana 3","Fecha":"26-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo H","Partido":"Uruguay vs. España","Sede":"Guadalajara"},
+  {"Semana":"Semana 3","Fecha":"26-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo H","Partido":"Cabo Verde vs. Arabia Saudita","Sede":"Houston"},
+  {"Semana":"Semana 3","Fecha":"27-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo G","Partido":"Nueva Zelanda vs. Bélgica","Sede":"Vancouver"},
+  {"Semana":"Semana 3","Fecha":"27-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo G","Partido":"Egipto vs. Irán","Sede":"Seattle"},
+  {"Semana":"Semana 3","Fecha":"27-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo L","Partido":"Panamá vs. Inglaterra","Sede":"Nueva York/Nueva Jersey"},
+  {"Semana":"Semana 3","Fecha":"27-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo L","Partido":"Croacia vs. Ghana","Sede":"Filadelfia"},
+  {"Semana":"Semana 3","Fecha":"27-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo K","Partido":"Colombia vs. Portugal","Sede":"Miami"},
+  {"Semana":"Semana 3","Fecha":"27-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo K","Partido":"RD Congo vs. Uzbekistán","Sede":"Atlanta"},
+  {"Semana":"Semana 3","Fecha":"27-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo J","Partido":"Jordania vs. Argentina","Sede":"Dallas"},
+  {"Semana":"Semana 3","Fecha":"27-Jun-26","Fase":"Fase de Grupos","Grupo_Llave":"Grupo J","Partido":"Argelia vs. Austria","Sede":"Kansas City"},
+  {"Semana":"Semana 3","Fecha":"28-Jun-26","Fase":"Dieciseisavos de Final","Grupo_Llave":"W49","Partido":"1A vs. 3C/D/E/F","Sede":"Los Ángeles"},
+  {"Semana":"Semana 3","Fecha":"29-Jun-26","Fase":"Dieciseisavos de Final","Grupo_Llave":"W50","Partido":"1E vs. 3A/B/C/D","Sede":"Boston"},
+  {"Semana":"Semana 3","Fecha":"30-Jun-26","Fase":"Dieciseisavos de Final","Grupo_Llave":"W51","Partido":"1I vs. 3E/F/G/H","Sede":"Nueva York/Nueva Jersey"},
+  {"Semana":"Semana 3","Fecha":"1-Jul-26","Fase":"Dieciseisavos de Final","Grupo_Llave":"W52","Partido":"2C vs. 2D","Sede":"San Francisco"},
+  {"Semana":"Semana 4","Fecha":"2-Jul-26","Fase":"Dieciseisavos de Final","Grupo_Llave":"W53","Partido":"1B vs. 3A/C/D/F","Sede":"Los Ángeles"},
+  {"Semana":"Semana 4","Fecha":"3-Jul-26","Fase":"Dieciseisavos de Final","Grupo_Llave":"W54","Partido":"1F vs. 2E","Sede":"Dallas"},
+  {"Semana":"Semana 4","Fecha":"4-Jul-26","Fase":"Octavos de Final","Grupo_Llave":"W65","Partido":"W49 vs. W50","Sede":"Filadelfia"},
+  {"Semana":"Semana 4","Fecha":"5-Jul-26","Fase":"Octavos de Final","Grupo_Llave":"W66","Partido":"W51 vs. W52","Sede":"Houston"},
+  {"Semana":"Semana 4","Fecha":"6-Jul-26","Fase":"Octavos de Final","Grupo_Llave":"W67","Partido":"W53 vs. W54","Sede":"Dallas"},
+  {"Semana":"Semana 4","Fecha":"7-Jul-26","Fase":"Octavos de Final","Grupo_Llave":"W68","Partido":"W55 vs. W56","Sede":"Atlanta"},
+  {"Semana":"Semana 4","Fecha":"8-Jul-26","Fase":"Octavos de Final","Grupo_Llave":"W69","Partido":"W57 vs. W58","Sede":"Vancouver"},
+  {"Semana":"Semana 5","Fecha":"10-Jul-26","Fase":"Cuartos de Final","Grupo_Llave":"W77","Partido":"W65 vs. W66","Sede":"Los Ángeles"},
+  {"Semana":"Semana 5","Fecha":"11-Jul-26","Fase":"Cuartos de Final","Grupo_Llave":"W78","Partido":"W67 vs. W68","Sede":"Kansas City"},
+  {"Semana":"Semana 5","Fecha":"11-Jul-26","Fase":"Cuartos de Final","Grupo_Llave":"W79","Partido":"W69 vs. W70","Sede":"Miami"},
+  {"Semana":"Semana 5","Fecha":"12-Jul-26","Fase":"Cuartos de Final","Grupo_Llave":"W80","Partido":"W71 vs. W72","Sede":"Boston"},
+  {"Semana":"Semana 5","Fecha":"14-Jul-26","Fase":"Semifinales","Grupo_Llave":"W81","Partido":"W77 vs. W78","Sede":"Dallas"},
+  {"Semana":"Semana 5","Fecha":"15-Jul-26","Fase":"Semifinales","Grupo_Llave":"W82","Partido":"W79 vs. W80","Sede":"Atlanta"},
+  {"Semana":"Semana 6","Fecha":"18-Jul-26","Fase":"Tercer Puesto","Grupo_Llave":"P83","Partido":"Perdedor 81 vs. Perdedor 82","Sede":"Miami"},
+  {"Semana":"Semana 6","Fecha":"19-Jul-26","Fase":"Gran Final","Grupo_Llave":"Final","Partido":"Ganador 81 vs. Ganador 82","Sede":"Nueva York/Nueva Jersey"}
+];
+
+// ─── Timezone data (UTC offsets in hours) ───
+const VENUE_TZ = {
+  "Ciudad de México": { name: "CDT", offset: -5 },
+  "Guadalajara":      { name: "CDT", offset: -5 },
+  "Monterrey":        { name: "CDT", offset: -5 },
+  "Toronto":          { name: "EDT", offset: -4 },
+  "Vancouver":        { name: "PDT", offset: -7 },
+  "Los Ángeles":      { name: "PDT", offset: -7 },
+  "San Francisco":    { name: "PDT", offset: -7 },
+  "Seattle":          { name: "PDT", offset: -7 },
+  "Las Vegas":        { name: "PDT", offset: -7 },
+  "Houston":          { name: "CDT", offset: -5 },
+  "Dallas":           { name: "CDT", offset: -5 },
+  "Kansas City":      { name: "CDT", offset: -5 },
+  "Atlanta":          { name: "EDT", offset: -4 },
+  "Miami":            { name: "EDT", offset: -4 },
+  "Boston":           { name: "EDT", offset: -4 },
+  "Filadelfia":       { name: "EDT", offset: -4 },
+  "Nueva York/Nueva Jersey": { name: "EDT", offset: -4 },
+};
+
+// Estimated kickoff times (local, 24h) per venue/date — representative schedule
+const MATCH_TIMES = {
+  "Ciudad de México": "18:00",
+  "Guadalajara":      "18:00",
+  "Monterrey":        "21:00",
+  "Toronto":          "15:00",
+  "Vancouver":        "16:00",
+  "Los Ángeles":      "18:00",
+  "San Francisco":    "15:00",
+  "Seattle":          "15:00",
+  "Houston":          "21:00",
+  "Dallas":           "18:00",
+  "Kansas City":      "15:00",
+  "Atlanta":          "12:00",
+  "Miami":            "15:00",
+  "Boston":           "18:00",
+  "Filadelfia":       "21:00",
+  "Nueva York/Nueva Jersey": "15:00",
+};
+
+const FLAGS = {
+  "México": "mx", "Sudáfrica": "za", "Corea del Sur": "kr", "Rep. Checa": "cz",
+  "Canadá": "ca", "Bosnia y Herzegovina": "ba", "Estados Unidos": "us", "Paraguay": "py",
+  "Catar": "qa", "Suiza": "ch", "Brasil": "br", "Marruecos": "ma",
+  "Haití": "ht", "Escocia": "gb-sct", "Australia": "au", "Turquía": "tr",
+  "Alemania": "de", "Curazao": "cw", "Países Bajos": "nl", "Japón": "jp",
+  "Costa de Marfil": "ci", "Ecuador": "ec", "Suecia": "se", "Túnez": "tn",
+  "España": "es", "Cabo Verde": "cv", "Bélgica": "be", "Egipto": "eg",
+  "Arabia Saudita": "sa", "Uruguay": "uy", "Irán": "ir", "Nueva Zelanda": "nz",
+  "Francia": "fr", "Senegal": "sn", "Irak": "iq", "Noruega": "no",
+  "Argentina": "ar", "Argelia": "dz", "Austria": "at", "Jordania": "jo",
+  "Portugal": "pt", "RD Congo": "cd", "Uzbekistán": "uz", "Colombia": "co",
+  "Inglaterra": "gb-eng", "Croacia": "hr", "Ghana": "gh", "Panamá": "pa",
+};
+
+// ─── State ───
+let activeWeek = 'all';
+let searchQuery = '';
+let activeTz = 'art';
+
+// ─── Helpers ───
+function getPhaseClass(fase) {
+  const map = {
+    "Fase de Grupos": "grupos",
+    "Dieciseisavos de Final": "dieciseis",
+    "Octavos de Final": "octavos",
+    "Cuartos de Final": "cuartos",
+    "Semifinales": "semis",
+    "Tercer Puesto": "tercero",
+    "Gran Final": "final",
+  };
+  return map[fase] || "grupos";
+}
+
+function getPhaseLabel(fase) {
+  const short = {
+    "Fase de Grupos": "Fase de Grupos",
+    "Dieciseisavos de Final": "Dieciseisavos",
+    "Octavos de Final": "Octavos de Final",
+    "Cuartos de Final": "Cuartos de Final",
+    "Semifinales": "Semifinales",
+    "Tercer Puesto": "3er Puesto",
+    "Gran Final": "🏆 Gran Final",
+  };
+  return short[fase] || fase;
+}
+
+function formatDate(dateStr) {
+  const months = {
+    "Jan":"enero","Feb":"febrero","Mar":"marzo","Apr":"abril",
+    "May":"mayo","Jun":"junio","Jul":"julio","Aug":"agosto",
+    "Sep":"septiembre","Oct":"octubre","Nov":"noviembre","Dec":"diciembre"
+  };
+  const [d, m, y] = dateStr.split('-');
+  return `${parseInt(d)} de ${months[m]} · 20${y}`;
+}
+
+function getTimeDisplay(match) {
+  const localTime = MATCH_TIMES[match.Sede] || "15:00";
+  const tz = VENUE_TZ[match.Sede];
+
+  if (activeTz === 'local') {
+    return { time: localTime, label: tz ? tz.name : 'Local' };
+  }
+
+  // Convert to ART (UTC-3)
+  if (!tz) return { time: localTime, label: 'Local' };
+
+  const [h, m] = localTime.split(':').map(Number);
+  const utcH = h - tz.offset;
+  const artH = ((utcH - 3) % 24 + 24) % 24;
+  const pad = n => String(n).padStart(2, '0');
+  return { time: `${pad(artH)}:${pad(m)}`, label: 'ART' };
+}
+
+function parseTeams(partido) {
+  const sep = partido.includes(' vs. ') ? ' vs. ' : ' vs ';
+  const parts = partido.split(sep);
+  return parts.length === 2 ? parts : [partido, ''];
+}
+
+function isKnockoutCode(name) {
+  return /^[WP]\d+$/.test(name.trim()) || /^\d[A-Z]/.test(name.trim());
+}
+
+function getFlag(name) {
+  return FLAGS[name.trim()] || null;
+}
+
+function flagHtml(code) {
+  if (!code) return '';
+  return `<span class="fi fi-${code} flag-icon"></span>`;
+}
+
+// ─── Render ───
+function getFilteredData() {
+  let data = FIXTURES;
+
+  if (activeWeek !== 'all' && !searchQuery) {
+    data = data.filter(m => m.Semana === activeWeek);
+  }
+
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    data = data.filter(m => {
+      const fields = [m.Partido, m.Sede, m.Grupo_Llave, m.Fase, m.Semana]
+        .join(' ').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      return fields.includes(q);
+    });
+  }
+
+  return data;
+}
+
+function render() {
+  const data = getFilteredData();
+  const main = document.getElementById('main');
+
+  if (data.length === 0) {
+    main.innerHTML = `
+      <div class="empty-state">
+        <div class="icon">⚽</div>
+        <h3>Sin resultados</h3>
+        <p>Intentá con otro término de búsqueda o seleccioná otra semana.</p>
+      </div>`;
+    return;
+  }
+
+  // Group by date
+  const byDate = {};
+  data.forEach(m => {
+    if (!byDate[m.Fecha]) byDate[m.Fecha] = [];
+    byDate[m.Fecha].push(m);
+  });
+
+  // Section header
+  let html = '';
+
+  if (searchQuery) {
+    html += `<div class="search-mode-info">
+      <span>🔎 Mostrando <strong>${data.length}</strong> partido${data.length !== 1 ? 's' : ''} para "<strong>${escapeHtml(searchQuery)}</strong>"</span>
+    </div>`;
+  } else if (activeWeek !== 'all') {
+    const weekNum = activeWeek.split(' ')[1];
+    const weekRange = {
+      '1':'11 – 17 Jun', '2':'18 – 24 Jun', '3':'25 Jun – 1 Jul',
+      '4':'2 – 8 Jul', '5':'10 – 15 Jul', '6':'18 – 19 Jul'
+    }[weekNum] || '';
+    html += `<div class="section-header">
+      <h2 class="section-title">Semana ${weekNum} · ${weekRange}</h2>
+      <span class="section-count">${data.length} partidos</span>
+    </div>`;
+  } else {
+    html += `<div class="section-header">
+      <h2 class="section-title">Fixture Completo</h2>
+      <span class="section-count">${data.length} partidos</span>
+    </div>`;
+  }
+
+  // Date groups
+  Object.entries(byDate).forEach(([fecha, matches]) => {
+    html += `<div class="date-group">`;
+    html += `<div class="date-label">${formatDate(fecha)}</div>`;
+    html += `<div class="cards-grid">`;
+
+    matches.forEach(m => {
+      const phaseClass = getPhaseClass(m.Fase);
+      const badgeClass = `badge-${phaseClass}`;
+      const [team1, team2] = parseTeams(m.Partido);
+      const flag1 = getFlag(team1);
+      const flag2 = team2 ? getFlag(team2) : '';
+      const isKO = isKnockoutCode(team1) || (team2 && isKnockoutCode(team2));
+      const nameClass = isKO ? 'team-name knockout' : 'team-name';
+      const { time, label } = getTimeDisplay(m);
+
+      const isFinal = m.Fase === 'Gran Final';
+
+      html += `<div class="match-card phase-${phaseClass}">
+        <div class="card-header">
+          <span class="phase-badge ${badgeClass}">${getPhaseLabel(m.Fase)}</span>
+          <span class="group-tag">${m.Grupo_Llave}</span>
+        </div>
+        <div class="matchup">
+          <div class="team">
+            ${flag1 ? `<span class="team-flag">${flagHtml(flag1)}</span>` : ''}
+            <div class="${nameClass}">${escapeHtml(team1)}</div>
+          </div>
+          <div class="vs-divider">VS</div>
+          <div class="team team-right">
+            ${flag2 ? `<span class="team-flag right-flag">${flagHtml(flag2)}</span>` : ''}
+            <div class="${nameClass}" style="text-align:right">${escapeHtml(team2 || '—')}</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="venue-info">
+            <span class="venue-icon">📍</span>
+            <span class="venue-name">${escapeHtml(m.Sede)}</span>
+          </div>
+          <div class="time-info">
+            <span class="time-label">${label}</span>
+            ${time}
+          </div>
+        </div>
+      </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  main.innerHTML = html;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── Event listeners ───
+document.getElementById('weekTabs').addEventListener('click', e => {
+  const btn = e.target.closest('.week-tab');
+  if (!btn) return;
+  activeWeek = btn.dataset.week;
+  if (activeWeek !== 'all') searchQuery = '';
+
+  document.querySelectorAll('.week-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const input = document.getElementById('searchInput');
+  input.value = '';
+  document.getElementById('searchBar').classList.remove('has-query');
+
+  render();
+});
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value.trim();
+  const bar = document.getElementById('searchBar');
+
+  if (searchQuery) {
+    bar.classList.add('has-query');
+    // Switch to "all" tab when searching
+    activeWeek = 'all';
+    document.querySelectorAll('.week-tab').forEach(b => b.classList.remove('active'));
+    document.querySelector('.week-tab[data-week="all"]').classList.add('active');
+  } else {
+    bar.classList.remove('has-query');
+  }
+
+  render();
+});
+
+document.getElementById('clearBtn').addEventListener('click', () => {
+  document.getElementById('searchInput').value = '';
+  searchQuery = '';
+  document.getElementById('searchBar').classList.remove('has-query');
+  render();
+});
+
+document.querySelectorAll('.tz-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeTz = btn.dataset.tz;
+    document.querySelectorAll('.tz-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+  });
+});
+
+// ─── Init ───
+render();
+</script>
+</body>
+</html>
